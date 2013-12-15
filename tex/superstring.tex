@@ -5,10 +5,11 @@
 \usepackage[T2A]{fontenc}
 
 \usepackage[russian, english]{babel}
-%\usepackage{indentfirst}
 \usepackage{titlesec}
 \usepackage{amsthm}
 \usepackage{lipsum}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
 
 \title{Общая надстрока наименьшей длины}
 \author{Андрей Осипов}
@@ -60,10 +61,59 @@
 
 \section{Доказательство}
 Давайте посмотрим на то, что на самом деле происходит с исходными строками во время работы алгоритма.
+Для начала, дадим несколько определений:
+
+\begin{definition}
+Пусть дана непустая строка $s$. 
+Тогда $s_{i,j}$, где $1 \leq i \leq j \leq |s|$ - это подстрока $s$ начинающаяся с $i$-ого символа и заканчивающаяся на $j$-ом символе строки $s$ включительно.
+\end{definition}
+
+\begin{definition}
+Пусть даны нупустые строки $s$, $t$ и число $pos$, тогда:
+\[
+	contains(s, t, pos) = 
+	\left\{ 
+		\begin{array}{lcl}
+			1, & \mbox{если } pos \geq 1, (pos + |t| - 1) \leq |s| \mbox{ и строка t равна } s_{pos, pos + |t| - 1}\\
+			0, & \mbox{иначе}\\ 
+		\end{array} 
+	\right.
+\]
+\end{definition}
+
+\begin{definition}
+Пусть даны непустые строки $s$, $t$, тогда:
+\[
+	index(s, t) = 
+	\left\{ 
+		\begin{array}{lcl}
+			\mbox{минимальное число pos}, & \mbox{такое, что contains(s, t, pos) = 1}\\
+			0, & \mbox{если такого числа не существует}\\ 
+		\end{array} 
+	\right.
+\]
+\end{definition}
+
+\begin{definition}
+Пусть $T = \{t_1,\dots,t_k\}, k \geq 1$ - упорядоченное множество непустых строк.
+Тогда, $orderedSuperstrings(T)$ - это множество таких общих надстрок $T$, 
+что $\forall i,j$ т.ч. $1 \leq i,j \leq k$ верно: $i \leq j \iff index(t, t_i) \leq index(t, t_j)$.
+И $superstring(T)$ - это строка из $orderedSuperstrings(T)$ наименьшей длины.
+\end{definition}
+
+Теперь заметим, что $superstring(T)$ можно построить жадно:
 
 \begin{lemma}
-
+Пусть $T = \{t_1,\dots,t_k\}, k \geq 1$ - упорядоченное множество непустых строк.
+Тогда, $superstring(T) = \{ pref(t_1, t_2)+pref(t_2, t_3)+\dots+pref(t_{k-1}, t_k)+t_k\}$. 
 \end{lemma}
+
+\proof
+Докажем индукцией по $k$.
+Для $k = 1$ очевидно(сама строка должна лежать в надстроке и она же является своей надстрокой).
+Пусть теперь для любого $k \leq K$ лемма верна. Тогда докажем, что она верна и для $k = K + 1$.
+
+Рассмотрим 
 
 \section{NP-полнота}
 
